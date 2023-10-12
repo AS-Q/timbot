@@ -5,6 +5,7 @@
 
 # Тест: Подключение и отображение
 
+
 from javascript import require, On, Once, AsyncTask, once, off
 mineflayer = require('mineflayer')
 mfviewer = require('prismarine-viewer').mineflayer
