@@ -5,7 +5,6 @@
 
 # Тест: Подключение и отображение
 
-
 from javascript import require, On, Once, AsyncTask, once, off
 mineflayer = require('mineflayer')
 mfviewer = require('prismarine-viewer').mineflayer
@@ -13,9 +12,14 @@ pathfinder = require('mineflayer-pathfinder')
 
 # Создаём бота со случайным именем (тут лучше вписать чёньть  постоянное)
 random_number = id([]) % 1000 # Give us a random number upto 1000
-BOT_USERNAME = f'colab_{random_number}'
+BOT_USERNAME = f'bot1'
 # в список параметров можно добавить 'password'
-bot = mineflayer.createBot({ 'host': 'pjs.deptofcraft.com', 'port': 25565, 'username': BOT_USERNAME, 'hideErrors': False })
+bot = mineflayer.createBot({
+    'host': 'AS_Q_.aternos.me',
+    'port':63007,
+    'username': BOT_USERNAME,
+    'hideErrors': False
+})
 
 # Действия при появлении в игре
 
@@ -63,13 +67,43 @@ def handleMsg(this, sender, message, *args):
         return
       pos = target.position
       bot.pathfinder.setMovements(movements)
-      bot.pathfinder.setGoal(pathfinder.goals.GoalNear(pos.x, pos.y, pos.z, RANGE_GOAL))
+      goals_near = pathfinder.goals.GoalNear(pos.x, pos.y, pos.z, RANGE_GOAL)
+      print(f'gn: {goals_near}')
+      bot.pathfinder.setGoal(goals_near)
     if 'stop' in message:
       off(bot, 'chat', handleMsg)
+    if 'jump' in message:
+      bot.chat("jumping")
+      bot.setControlState('jump', True)
+      bot.setControlState('jump', False)  
+    if 'time' in message:
+      bot.chat ('now')
+      bot.chat(str(bot.time.time))
+    if 'go forward' in message:
+      bot.chat("forward")
+      bot.setControlState('forward', True)
+      timeStartGoForward=bot.time.time
+      bot.chat('start at'+str(timeStartGoForward))
+      while (bot.time.time<timeStartGoForward+40):
+        pass
+      bot.setControlState('forward', False)
+      bot.chat('start at'+str(bot.time.time))  
+    if 'coord' in message:
+      player = bot.players[sender]
+      pos = player.entity.position
+      bot.chat(pos.x)
+      bot.chat(pos.y)
+      bot.chat(pos.z)
+    if 'day' in message: 
+      bot.chat("day") 
+      bot.chat("/time set day")
+      
+
+       
 
 
 # тестируем навигацию без чата
 # будет куда-то бестолково идти, гибнуть и респавниться
-pos = bot.entity.position
-bot.pathfinder.setMovements(movements)
-bot.pathfinder.setGoal(pathfinder.goals.GoalNear(pos.x-10, pos.y+20, pos.z, RANGE_GOAL))
+#pos = bot.entity.position
+#bot.pathfinder.setMovements(movements)
+#bot.pathfinder.setGoal(pathfinder.goals.GoalNear(pos.x-10, pos.y+20, pos.z, RANGE_GOAL))
