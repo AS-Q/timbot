@@ -97,6 +97,28 @@ def handleMsg(this, sender, message, *args):
     if 'day' in message: 
       bot.chat("day") 
       bot.chat("/time set day")
+    if 'dig this' in message:
+      player = bot.players[sender]
+      block=bot.blockAtEntityCurcor(entity=player, maxDistance=16)
+      if (block==null):
+        bot.chat("yours tagret is to far")
+      else:  
+        pos=block.position
+        goals_near = pathfinder.goals.GoalNear(pos.x, pos.y, pos.z, RANGE_GOAL)
+        print(f'gn: {goals_near}')
+        bot.pathfinder.setGoal(goals_near)
+        bot.chat("planning time="+bot.digTime(block))
+        bot.dig(block, forceLook='raycast', digFace='raycast')
+    if 'craft wooden pickaxe' in message:
+      bot.recipesFor(270,null,null,craftingTable)
+
+
+
+
+
+
+
+
       
 
        
