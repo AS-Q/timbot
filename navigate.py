@@ -110,7 +110,15 @@ def handleMsg(this, sender, message, *args):
         bot.chat("planning time="+bot.digTime(block))
         bot.dig(block, forceLook='raycast', digFace='raycast')
     if 'craft wooden pickaxe' in message:
-      bot.recipesFor(270,null,null,craftingTable)
+      if (bot.recipesFor(270,null,null,craftingTable)== null):
+        bot.chat("I can't craft this")
+      else:
+        nearCrafttable= bot.findBlock(options[0])
+        bot.craft(bot.recipesFor(270,null,null,craftingTable),1,nearCrafttable)
+        bot.chat("I finish craft")
+
+
+
 
 
 
